@@ -9,7 +9,37 @@
  * @see https://www.techiedelight.com/flood-fill-algorithm/
  */
 
-const neighbors = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
+const neighborOffsets = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1]
+]
+
+function isInside(rgbData, location) {
+  const x = location[0]
+  const y = location[1]
+  return x >= 0 && x < rgbData.length && y >= 0 && y < rgbData[0].length
+}
+
+function checkLocation(rgbData, location) {
+  if (!isInside(rgbData, location)) {
+    throw new Error('location should point to a pixel within the rgbData')
+  }
+}
+
+function* neighbors(rgbData, location) {
+  for (const offset of neighborOffsets) {
+    const neighborLocation = [location[0] + offset[0], location[1] + offset[1]]
+    if (isInside(rgbData, neighborLocation)) {
+      yield neighborLocation
+    }
+  }
+}
 
 /**
  * Implements the flood fill algorithm through a breadth-first approach using a queue.
@@ -19,13 +49,13 @@ const neighbors = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0],
  * @param targetColor The old color to be replaced.
  * @param replacementColor The new color to replace the old one.
  */
-export function breadthFirstSearch (rgbData, location, targetColor, replacementColor) {
-  if (location[0] < 0 ||
-    location[0] >= rgbData.length ||
-    location[1] < 0 ||
-    location[1] >= rgbData[0].length) {
-    throw new Error('location should point to a pixel within the rgbData')
-  }
+export function breadthFirstSearch(
+  rgbData,
+  location,
+  targetColor,
+  replacementColor
+) {
+  checkLocation(rgbData, location)
 
   const queue = []
   queue.push(location)
@@ -43,13 +73,13 @@ export function breadthFirstSearch (rgbData, location, targetColor, replacementC
  * @param targetColor The old color to be replaced.
  * @param replacementColor The new color to replace the old one.
  */
-export function depthFirstSearch (rgbData, location, targetColor, replacementColor) {
-  if (location[0] < 0 ||
-    location[0] >= rgbData.length ||
-    location[1] < 0 ||
-    location[1] >= rgbData[0].length) {
-    throw new Error('location should point to a pixel within the rgbData')
-  }
+export function depthFirstSearch(
+  rgbData,
+  location,
+  targetColor,
+  replacementColor
+) {
+  checkLocation(rgbData, location)
 
   depthFirstFill(rgbData, location, targetColor, replacementColor)
 }
@@ -63,19 +93,20 @@ export function depthFirstSearch (rgbData, location, targetColor, replacementCol
  * @param replacementColor The new color to replace the old one.
  * @param queue The locations that still need to be visited.
  */
-function breadthFirstFill (rgbData, location, targetColor, replacementColor, queue) {
+function breadthFirstFill(
+  rgbData,
+  location,
+  targetColor,
+  replacementColor,
+  queue
+) {
   const currentLocation = queue[0]
   queue.shift()
 
   if (rgbData[currentLocation[0]][currentLocation[1]] === targetColor) {
     rgbData[currentLocation[0]][currentLocation[1]] = replacementColor
-
-    for (let i = 0; i < neighbors.length; i++) {
-      const x = currentLocation[0] + neighbors[i][0]
-      const y = currentLocation[1] + neighbors[i][1]
-      if (x >= 0 && x < rgbData.length && y >= 0 && y < rgbData[0].length) {
-        queue.push([x, y])
-      }
+    for (const neighborLocation of neighbors(rgbData, currentLocation)) {
+      queue.push(neighborLocation)
     }
   }
 }
@@ -88,16 +119,11 @@ function breadthFirstFill (rgbData, location, targetColor, replacementColor, que
  * @param targetColor The old color to be replaced.
  * @param replacementColor The new color to replace the old one.
  */
-function depthFirstFill (rgbData, location, targetColor, replacementColor) {
+function depthFirstFill(rgbData, location, targetColor, replacementColor) {
   if (rgbData[location[0]][location[1]] === targetColor) {
     rgbData[location[0]][location[1]] = replacementColor
-
-    for (let i = 0; i < neighbors.length; i++) {
-      const x = location[0] + neighbors[i][0]
-      const y = location[1] + neighbors[i][1]
-      if (x >= 0 && x < rgbData.length && y >= 0 && y < rgbData[0].length) {
-        depthFirstFill(rgbData, [x, y], targetColor, replacementColor)
-      }
+    for (const neighborLocation of neighbors(rgbData, location)) {
+      depthFirstFill(rgbData, neighborLocation, targetColor, replacementColor)
     }
   }
 }

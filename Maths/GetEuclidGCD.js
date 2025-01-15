@@ -1,32 +1,39 @@
-/*
-    Problem statement and Explanation : https://en.wikipedia.org/wiki/Euclidean_algorithm
-
-    In this method, we have followed the iterative approach to first
-    find a minimum of both numbers and go to the next step.
-*/
-
-/**
- * GetEuclidGCD return the gcd of two numbers using Euclidean algorithm.
- * @param {Number} arg1 first argument for gcd
- * @param {Number} arg2 second argument for gcd
- * @returns return a `gcd` value of both number.
- */
-const GetEuclidGCD = (arg1, arg2) => {
-  // firstly, check that input is a number or not.
-  if (typeof arg1 !== 'number' || typeof arg2 !== 'number') {
-    return new TypeError('Argument is not a number.')
+function CheckInput(a, b) {
+  if (typeof a !== 'number' || typeof b !== 'number') {
+    throw new TypeError('Arguments must be numbers')
   }
-  // check that the input number is not a negative value.
-  if (arg1 < 1 || arg2 < 1) {
-    return new TypeError('Argument is a negative number.')
-  }
-  // Find a minimum of both numbers.
-  let less = arg1 > arg2 ? arg2 : arg1
-  // Iterate the number and find the gcd of the number using the above explanation.
-  for (less; less >= 2; less--) {
-    if ((arg1 % less === 0) && (arg2 % less === 0)) return (less)
-  }
-  return (less)
 }
 
-export { GetEuclidGCD }
+/**
+ * GetEuclidGCD Euclidean algorithm to determine the GCD of two numbers
+ * @param {Number} a integer (may be negative)
+ * @param {Number} b integer (may be negative)
+ * @returns {Number} Greatest Common Divisor gcd(a, b)
+ */
+export function GetEuclidGCD(a, b) {
+  CheckInput(a, b)
+  a = Math.abs(a)
+  b = Math.abs(b)
+  while (b !== 0) {
+    const rem = a % b
+    a = b
+    b = rem
+  }
+  return a
+}
+
+/**
+ * Recursive version of GetEuclidGCD
+ * @param {Number} a integer (may be negative)
+ * @param {Number} b integer (may be negative)
+ * @returns {Number} Greatest Common Divisor gcd(a, b)
+ */
+export function GetEuclidGCDRecursive(a, b) {
+  CheckInput(a, b)
+  a = Math.abs(a)
+  b = Math.abs(b)
+  if (b == 0) {
+    return a
+  }
+  return GetEuclidGCDRecursive(b, a % b)
+}

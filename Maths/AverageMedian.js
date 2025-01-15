@@ -8,22 +8,15 @@
  * else if the length of the array is odd number, the median value will be the middle number in the array
  */
 
-const averageMedian = (numbers) => {
-  let median = 0
+const averageMedian = (sourceArrayOfNumbers) => {
+  const numbers = [...sourceArrayOfNumbers].sort(sortNumbers)
   const numLength = numbers.length
-  numbers = numbers.sort(sortNumbers)
 
-  if (numLength % 2 === 0) {
-    median = (numbers[numLength / 2 - 1] + numbers[numLength / 2]) / 2
-  } else {
-    median = numbers[(numLength - 1) / 2]
-  }
-
-  return median
+  return numLength % 2 === 0
+    ? (numbers[numLength / 2 - 1] + numbers[numLength / 2]) / 2
+    : numbers[Math.floor(numLength / 2)]
 }
 
-const sortNumbers = (num1, num2) => {
-  return num1 - num2
-}
+const sortNumbers = (num1, num2) => num1 - num2
 
 export { averageMedian }

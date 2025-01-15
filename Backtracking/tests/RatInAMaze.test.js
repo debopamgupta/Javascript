@@ -6,15 +6,17 @@ describe('RatInAMaze', () => {
 
     for (const value of values) {
       // we deliberately want to check whether this constructor call fails or not
-      // eslint-disable-next-line no-new
-      expect(() => { new RatInAMaze(value) }).toThrow()
+      expect(() => {
+        new RatInAMaze(value)
+      }).toThrow()
     }
   })
 
   it('should fail for an empty array', () => {
     // we deliberately want to check whether this constructor call fails or not
-    // eslint-disable-next-line no-new
-    expect(() => { new RatInAMaze([]) }).toThrow()
+    expect(() => {
+      new RatInAMaze([])
+    }).toThrow()
   })
 
   it('should fail for a non-square array', () => {
@@ -24,8 +26,9 @@ describe('RatInAMaze', () => {
     ]
 
     // we deliberately want to check whether this constructor call fails or not
-    // eslint-disable-next-line no-new
-    expect(() => { new RatInAMaze(array) }).toThrow()
+    expect(() => {
+      new RatInAMaze(array)
+    }).toThrow()
   })
 
   it('should fail for arrays containing invalid values', () => {
@@ -33,8 +36,9 @@ describe('RatInAMaze', () => {
 
     for (const value of values) {
       // we deliberately want to check whether this constructor call fails or not
-      // eslint-disable-next-line no-new
-      expect(() => { new RatInAMaze(value) }).toThrow()
+      expect(() => {
+        new RatInAMaze(value)
+      }).toThrow()
     }
   })
 
@@ -51,13 +55,20 @@ describe('RatInAMaze', () => {
   })
 
   it('should work for a simple 3x3 maze', () => {
-    const maze = new RatInAMaze([[1, 1, 0], [0, 1, 0], [0, 1, 1]])
+    const maze = new RatInAMaze([
+      [1, 1, 0],
+      [0, 1, 0],
+      [0, 1, 1]
+    ])
     expect(maze.solved).toBe(true)
     expect(maze.path).toBe('RDDR')
   })
 
   it('should work for a simple 2x2 that can not be solved', () => {
-    const maze = new RatInAMaze([[1, 0], [0, 1]])
+    const maze = new RatInAMaze([
+      [1, 0],
+      [0, 1]
+    ])
     expect(maze.solved).toBe(false)
     expect(maze.path).toBe('')
   })

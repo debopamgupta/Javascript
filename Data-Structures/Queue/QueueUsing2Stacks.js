@@ -2,17 +2,17 @@
 // contribution made by hamza chabchoub for a university project
 
 class Queue {
-  constructor () {
+  constructor() {
     this.inputStack = []
     this.outputStack = []
   }
 
   // Push item into the inputstack
-  enqueue (item) {
+  enqueue(item) {
     this.inputStack.push(item)
   }
 
-  dequeue () {
+  dequeue() {
     // push all items to outputstack
     this.outputStack = []
     while (this.inputStack.length > 0) {
@@ -27,24 +27,6 @@ class Queue {
         this.inputStack.push(this.outputStack.pop())
       }
       return top
-    }
-  }
-
-  // display elements of the inputstack
-  listIn (output = value => console.log(value)) {
-    let i = 0
-    while (i < this.inputStack.length) {
-      output(this.inputStack[i])
-      i++
-    }
-  }
-
-  // display element of the outputstack
-  listOut (output = value => console.log(value)) {
-    let i = 0
-    while (i < this.outputStack.length) {
-      output(this.outputStack[i])
-      i++
     }
   }
 }
